@@ -15,17 +15,28 @@
     <h1>🚛 Fleet Intelligence Dashboard</h1>
 
     <div class="controls">
-      <select id="truckSelect"></select>
-      <select id="quarterSelect"></select>
+      <!-- Year Filter (Required for app.js) -->
+      <select id="yearSelect">
+        <option value="ALL">All Years</option>
+      </select>
+
+      <!-- Quarter Filter -->
+      <select id="quarterSelect">
+        <option value="ALL">All Quarters</option>
+        <option value="Q1">Q1 (Jan–Mar)</option>
+        <option value="Q2">Q2 (Apr–Jun)</option>
+        <option value="Q3">Q3 (Jul–Sep)</option>
+        <option value="Q4">Q4 (Oct–Dec)</option>
+      </select>
     </div>
   </header>
 
   <!-- KPI CARDS -->
   <section class="kpis">
     <div class="kpi">
-      <h3>Total Miles (Quarter)</h3>
+      <h3>Total Miles</h3>
       <div class="value" id="totalMiles">0</div>
-      <div class="trend up">▲ 4.3% from last quarter</div>
+      <div class="trend up">Quarter filtered</div>
     </div>
 
     <div class="kpi">
@@ -36,14 +47,14 @@
 
     <div class="kpi">
       <h3>Fuel Purchased</h3>
-      <div class="value" id="fuelGallons">0 gal</div>
-      <div class="trend down">▼ 1.2% fuel efficiency</div>
+      <div class="value" id="fuelGallons">—</div>
+      <div class="trend">Fuel sheet integration pending</div>
     </div>
 
     <div class="kpi">
       <h3>Average MPG</h3>
-      <div class="value" id="avgMpg">0</div>
-      <div class="trend up">▲ Improved</div>
+      <div class="value" id="avgMpg">—</div>
+      <div class="trend">Fuel integration required</div>
     </div>
   </section>
 
