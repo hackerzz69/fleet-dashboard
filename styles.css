@@ -1,0 +1,145 @@
+:root {
+  --bg: #0b1220;
+  --panel: #111c33;
+  --panel-soft: #16213e;
+  --border: #24324a;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --accent: #38bdf8;
+  --success: #22c55e;
+  --danger: #ef4444;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: linear-gradient(180deg, #050b17, #0b1220);
+  color: var(--text);
+}
+
+/* HEADER */
+
+.header {
+  padding: 20px 30px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+}
+
+select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+/* KPI CARDS */
+
+.kpis {
+  padding: 25px 30px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.kpi {
+  background: linear-gradient(180deg, var(--panel), var(--panel-soft));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.kpi h3 {
+  margin: 0 0 8px 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.kpi .value {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.trend {
+  font-size: 0.8rem;
+  margin-top: 6px;
+}
+
+.up { color: var(--success); }
+.down { color: var(--danger); }
+
+/* MAIN GRID */
+
+.main {
+  padding: 0 30px 30px 30px;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 350px 1fr;
+}
+
+.card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-soft));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+/* TABLES */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px 6px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+th {
+  text-align: left;
+  color: var(--muted);
+}
+
+.number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.route {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+tr:hover {
+  background: rgba(56,189,248,.05);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+}
