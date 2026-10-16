@@ -72,6 +72,11 @@
         </thead>
         <tbody id="iftaTable"></tbody>
       </table>
+      <p id="iftaNote" style="display:none;font-size:0.8rem;color:var(--muted)">
+        ⚠ State miles are estimated (even split of route miles).
+        Add a <b>State Miles</b> column to the sheet (e.g. <i>TX:1200, OK:300</i>)
+        for audit-ready numbers.
+      </p>
     </div>
 
     <div class="card">
@@ -92,7 +97,16 @@
 
   </section>
 
+  <!-- IFTA TAX CALCULATOR -->
+  <section class="main" style="grid-template-columns:1fr">
+    <div class="card" id="taxCard">
+      <h2>🧾 IFTA Tax Calculator</h2>
+      <p style="color:var(--muted)">Loading…</p>
+    </div>
+  </section>
+
   <!-- JS -->
+  <script src="ifta.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -39,6 +39,11 @@ async function loadCSV() {
 
   initFilters();
   render();
+
+  if (typeof initTaxCalculator === "function") {
+    await initTaxCalculator();
+    render(); // re-render now that fuel data is in
+  }
 }
 
 /* ==============================
@@ -47,8 +52,12 @@ async function loadCSV() {
 
 function parseDate(str) {
   if (!str) return NaN;
-  const [m, d, y] = str.split("/");
-  return new Date(`20${y}-${m.padStart(2,"0")}-${d.padStart(2,"0")}`);
+  const parts = str.split("/");
+  if (parts.length !== 3) return NaN;
+  let [m, d, y] = parts;
+  y = y.length === 2 ? "20" + y : y; // accept 10/1/25 and 10/1/2025
+  const dt = new Date(`${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}T12:00:00`);
+  return isNaN(dt) ? NaN : dt;
 }
 
 function getQuarter(date) {
@@ -107,6 +116,9 @@ function render() {
   renderTrips(filtered);
   renderIFTA(filtered);
   updateKPIs(filtered);
+
+  if (typeof renderTaxCalculator === "function")
+    renderTaxCalculator(filtered, year, quarter);
 }
 
 /* ==============================
@@ -132,20 +144,22 @@ function renderTrips(list) {
 
 /* ==============================
    RENDER IFTA
+   (uses the optional "State Miles" column when present,
+   falls back to an even split of route miles)
 ============================== */
 
 function renderIFTA(list) {
   const totals = {};
+  let estimated = false;
 
   list.forEach(t => {
-    const miles = Number(t.mileage);
-    if (!t.route || isNaN(miles)) return;
-
-    const states = t.route.split(",").map(s => s.trim());
-    const per = miles / states.length;
-
-    states.forEach(s => {
-      totals[s] = (totals[s] || 0) + per;
+    const { miles, estimated: est } =
+      (typeof stateMilesForTrip === "function")
+        ? stateMilesForTrip(t)
+        : { miles: {}, estimated: true };
+    if (est) estimated = true;
+    Object.entries(miles).forEach(([s, m]) => {
+      totals[s] = (totals[s] || 0) + m;
     });
   });
 
@@ -161,6 +175,9 @@ function renderIFTA(list) {
           <td class="number">${miles.toFixed(1)}</td>
         </tr>`;
     });
+
+  const note = document.getElementById("iftaNote");
+  if (note) note.style.display = estimated ? "" : "none";
 }
 
 /* ==============================
@@ -177,9 +194,11 @@ function updateKPIs(list) {
     if (!isNaN(miles)) totalMiles += miles;
 
     if (t.route) {
-      t.route.split(",").forEach(s =>
-        stateSet.add(s.trim())
-      );
+      t.route.split(",").forEach(s => {
+        const st = (typeof cleanState === "function")
+          ? cleanState(s) : s.trim();
+        if (st) stateSet.add(st);
+      });
     }
   });
 
